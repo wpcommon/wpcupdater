@@ -280,29 +280,11 @@ class WPCUpdater_Plugin {
 	}
 
 	private function get_cached_key( $_cache_key = '' ) {
-		$_cache_key = $this->cache_key . '_' . $_cache_key;
-		$cache = get_option( $_cache_key );
-		if ( empty( $cache['timeout'] ) || time() > $cache['timeout'] ) {
-			return false;
-		}
-
-		$cache['value'] = json_decode( $cache['value'] );
-		if ( ! empty( $cache['value']->icons ) ) {
-			$cache['value']->icons = (array) $cache['value']->icons;
-		}
-
-		return $cache['value'];
+		return get_transient( $this->cache_key . '_' . $_cache_key );
 	}
 
 	private function set_cached_key( $_cache_key = '', $_value = '' ) {
-		$_cache_key = $this->cache_key . '_' . $_cache_key;
-		$data = array(
-			'timeout' => strtotime( '+3 hours', time() ),
-			'value' => json_encode( $_value ),
-		);
-
-		delete_option( $_cache_key );
-		update_option( $_cache_key, $data, 'no' );
+		set_transient( $this->cache_key . '_' . $_cache_key, $_value, 10800 );
 	}
 
 	private function add_key_card() {
