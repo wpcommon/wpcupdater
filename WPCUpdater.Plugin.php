@@ -52,9 +52,6 @@ class WPCUpdater_Plugin {
 	private function init() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update_plugins_check' ) );
 		add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
-		remove_action( 'after_plugin_row_' . $this->name, 'wp_plugin_update_row', 10 );
-		add_action( 'after_plugin_row_' . $this->name, array( $this, 'plugin_row_notification' ), 10, 2 );
-		add_action( 'admin_init', array( $this, 'admin_init_show_changelog' ) );
 		add_action( 'admin_init', array( $this, 'admin_init_register_option' ) );
 		add_action( 'admin_init', array( $this, 'admin_init_key_action' ) );
 		add_action( 'admin_init', array( $this, 'admin_init_key_ping' ) );
@@ -117,14 +114,6 @@ class WPCUpdater_Plugin {
 		}
 
 		return $_data;
-	}
-
-	public function plugin_row_notification( $_file, $_plugin ) {
-		// todo: multisite
-	}
-
-	public function admin_init_show_changelog() {
-		// todo: multisite
 	}
 
 	public function admin_init_register_option() {
